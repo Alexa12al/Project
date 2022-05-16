@@ -1,11 +1,14 @@
 pipeline {
     agent any
-    stages {
-        stage("build") {
-            steps {
-                sh """
-                    echo hello world
-                """
+    stages{
+        stage("Pull Image") {
+            steps{
+                app=docker.build("project", "-f project.Dockerfile .")
+            }
+        }
+        stage("Run Image") {
+            steps{
+                app.run("-dit","--name my-running-app","-p 8080:80")
             }
         }
     }
